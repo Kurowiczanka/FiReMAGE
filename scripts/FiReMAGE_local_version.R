@@ -896,7 +896,13 @@ candidateList <-
 
     subList$pFDR <- pFDR_backend$pFDR
     return(subList)
-  }
+   }
+## Calculating GPL value
+candidateList$GPL <- NA
+
+for(i in 1:nrow(candidateList)){
+  candidateList$GPL[i] <- 1 + nrow(candidateList[candidateList$trait==candidateList$trait[i] & candidateList$loci==candidateList$loci[i] & candidateList$`Gene Name` != candidateList$`Gene Name`[i],])
+}
 
 ## Dividing the candidate list up by trait
 
