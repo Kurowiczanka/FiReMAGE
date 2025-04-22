@@ -897,11 +897,12 @@ candidateList <-
     subList$pFDR <- pFDR_backend$pFDR
     return(subList)
    }
-## Calculating GPL value
+        
+## Calculating GPL value - "How many FM hits of the same x/5 presence are within the same locus as the given gene?"
 candidateList$GPL <- NA
 
 for(i in 1:nrow(candidateList)){
-  candidateList$GPL[i] <- 1 + nrow(candidateList[candidateList$trait==candidateList$trait[i] & candidateList$loci==candidateList$loci[i] & candidateList$`Gene Name` != candidateList$`Gene Name`[i],])
+  candidateList$GPL[i] <- 1 + nrow(candidateList[candidateList$trait==candidateList$trait[i] & candidateList$present==candidateList$present[i] & candidateList$loci==candidateList$loci[i] & candidateList$`Gene Name` != candidateList$`Gene Name`[i],])
 }
 
 ## Dividing the candidate list up by trait
