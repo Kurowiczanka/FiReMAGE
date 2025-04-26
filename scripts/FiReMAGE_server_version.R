@@ -894,13 +894,22 @@ candidateList <-
     return(subList)
   }
 ## Calculating GPL value - "How many FM hits of the same x/5 presence are within the same locus as the given gene?"
+          
 candidateList$GPL <- NA
-
-for(i in 1:nrow(candidateList)){
-  candidateList$GPL[i] <- 1 + nrow(candidateList[candidateList$trait==candidateList$trait[i] & candidateList$present==candidateList$present[i] & candidateList$loci==candidateList$loci[i] & candidateList$`Gene Name` != candidateList$`Gene Name`[i],])
+for(i in 1:nrow(df)){
+  df$GPL[i] <- 1 + nrow(df[df$trait==df$trait[i] & df$present==df$present[i] & df$loci==df$loci[i] & df$`Gene Name` != df$`Gene Name`[i],])
 }
 
+## Calculating the Ranking Score (RS) - multiplying FDR by GPL
+          
+candidateList$RS <- NA
+for(i in 1:nrow(df)){
+  candidateList$RS[i] <- candidateList$pFDR[i] * candidateList$GPL[i]
+}
 
+## Ordering candidates by the Ranking Score:
+candidateList <- candidateList[order(candidateList$RS), ]
+          
 ## Dividing the candidate list up by trait
 
 candidateList_split <- split(candidateList, candidateList$trait)
